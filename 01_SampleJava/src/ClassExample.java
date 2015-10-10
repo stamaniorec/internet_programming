@@ -7,5 +7,11 @@ public class ClassExample {
 		room.setWidth(10);
 		room.setHeight(12);
 		System.out.println("Area: " + room.calculateArea());
+		
+		final Room room2 = new Room();
+		room2.setWidth(10);
+		room2.setHeight(12);
+		System.out.println(room == room2);
+		System.out.println(room.equals(room2));
 	}
 }
