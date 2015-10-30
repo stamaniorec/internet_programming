@@ -1,5 +1,5 @@
 package commandshandling;
 
 public interface CommandHandler {
-	public int execute();
+	public int execute(String[] args);
 }
