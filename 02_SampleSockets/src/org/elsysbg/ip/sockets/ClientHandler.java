@@ -31,8 +31,16 @@ public class ClientHandler implements Runnable {
 			scanner.close();
 			out.close();
 		} catch(IOException e) {
+			// TODO check if closed before printing the error
 			e.printStackTrace();
+		} finally {
+			echoServer.onClientStopped(this);
 		}
+	}
+	
+	public void stopClient() throws IOException {
+		socket.close();
+		// TODO add variable closed
 	}
 	
 }
