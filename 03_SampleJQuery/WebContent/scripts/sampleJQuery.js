@@ -26,6 +26,23 @@ $(document).ready(function() {
 //	removeById();
 	removeByFind($("ol"));
 	
+	$("#remove-mountain").on("click", function() {
+		alert("removing mountain");
+	});
+	
+	$("#remove-mountain").on("mouseover", function() {
+		alert("hovering over remove mountain");
+	});
+	
+	$("#add-mountain").click(function() {
+		var newMountainElement = $("<li />");
+		var mountainName = $("#mountain-name-input").val();
+		newMountainElement.text(mountainName);
+		$("#mountain-name-input").val("");
+		newMountainElement.text(mountainName);
+		$("ul").append(newMountainElement);
+	});
+	
 	// add new row to the table
 	$("table").append("<tr><td>3</td><td>Gosho</td></tr>");
 
