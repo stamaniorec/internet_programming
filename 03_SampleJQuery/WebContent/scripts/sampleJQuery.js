@@ -34,13 +34,33 @@ $(document).ready(function() {
 		alert("hovering over remove mountain");
 	});
 	
+	var nextFreeMountainId = 1;
+
 	$("#add-mountain").click(function() {
 		var newMountainElement = $("<li />");
 		var mountainName = $("#mountain-name-input").val();
 		newMountainElement.text(mountainName);
 		$("#mountain-name-input").val("");
 		newMountainElement.text(mountainName);
+		newMountainElement.attr("nextFreeMountainId", "mountain"+(nextFreeMountainId++));
 		$("ul").append(newMountainElement);
+	});
+	
+	$(document).on("click", "ul li", function() {
+		alert($(this).attr("id"));
+	});
+	
+	$("#hiking").click(function() {
+		var allMountains = $("ul li");
+//		for(var i = 0; i < allMountains.length; ++i) {
+//			var next = $(allMountains[i]);
+//			alert(next.text());
+//		}
+		$.each(allMountains, function(index, value) {
+			var next = $(value);
+			alert(next.text());
+		});
+//		_.forEach(allMountains, function() {}; // lodash
 	});
 	
 	// add new row to the table
