@@ -51,16 +51,11 @@ $(document).ready(function() {
 	});
 	
 	$("#hiking").click(function() {
-		var allMountains = $("ul li");
-//		for(var i = 0; i < allMountains.length; ++i) {
-//			var next = $(allMountains[i]);
-//			alert(next.text());
-//		}
-		$.each(allMountains, function(index, value) {
-			var next = $(value);
-			alert(next.text());
-		});
-//		_.forEach(allMountains, function() {}; // lodash
+ 		var allMountains = $("ul li");
+		_.forEach(allMountains, function(value) {
+ 			var next = $(value);
+ 			alert(next.text());
+		})
 	});
 	
 	// add new row to the table
