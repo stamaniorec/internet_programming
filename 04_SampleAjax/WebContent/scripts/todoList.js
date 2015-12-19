@@ -62,6 +62,19 @@ $(document).ready(function() {
 		$("#updatePanel input[name='title']").val(title);
 		$("#updatePanel textarea[name='description']").val(description);
 	}
+
+	function createTask() {
+		var new_task = {
+			title: $("#createPanel [name='title']").val(),
+			description: $("#createPanel [name='description']").val()
+		};
+		$.ajax(ENDPOINT, {
+			method: "POST",
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify(new_task),
+			dataType: "json"
+		});
+	}
 	
 	function reloadTasks() {
 		listTasks().then(function(response) {
@@ -98,6 +111,13 @@ $(document).ready(function() {
 		});
 		$(document).on("click", "#readPanel .task-action-remove", function() {
 			deleteTask(taskId);
+			location.reload(true);
+		});
+		$(document).on("click", "#addTaskButton", function() {
+			showPanel("createPanel");
+		});
+		$(document).on("click", "#createPanel .task-action-ok", function() {
+			createTask();
 			location.reload(true);
 		});
 	}
