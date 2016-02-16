@@ -7,6 +7,14 @@ public class Task {
 	private long id;
 	private String title;
 	private String description;
+	private long memberId;
+	
+	public long getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(long memberId) {
+		this.memberId = memberId;
+	}
 	public long getId() {
 		return id;
 	}
