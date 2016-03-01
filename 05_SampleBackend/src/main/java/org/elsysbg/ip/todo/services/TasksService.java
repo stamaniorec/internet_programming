@@ -1,32 +1,89 @@
 package org.elsysbg.ip.todo.services;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 import org.elsysbg.ip.todo.entities.Task;
 
 @Singleton
 public class TasksService {
+	private final EntityManagerFactory emf;
+
+	public TasksService() {
+		emf = Persistence.createEntityManagerFactory("todolist-jpa");
+	}
+
 	public Task createTask(Task task) {
-		return null;
+		final EntityManager em = emf.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(task);
+			em.getTransaction().commit();
+			return task;
+		} finally {
+			if(em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			em.close();
+		}
 	}
 	
 	public List<Task> getTasks() {
-		return null;
+		final EntityManager em = emf.createEntityManager();
+		try {
+			final TypedQuery<Task> query = 
+					em.createNamedQuery(Task.QUERY_ALL, Task.class);
+			return query.getResultList();
+		} finally {
+			em.close();
+		}
 	}
 	
 	public Task getTask(long taskId) {
-		return null;
+		final EntityManager em = emf.createEntityManager();
+		try {
+			final Task result = em.find(Task.class, taskId);
+			if(result == null) {
+				throw new IllegalArgumentException("No task with id: " + taskId);
+			}
+			return result;
+		} finally {
+			em.close();
+		}
 	}
 	
 	public Task updateTask(Task task) {
-		return null;
+		final EntityManager em = emf.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			final Task result = em.merge(task);
+			em.getTransaction().commit();
+			return result;
+		} finally {
+			if(em.getTransaction().isActive()) {
+				em.getTransaction().rollback();
+			}
+			em.close();
+		}
 	}
 	
 	public void deleteTask(long taskId) {
+		final EntityManager em = emf.createEntityManager();
+		try {
+			em.getTransaction().begin();
+			final Task fromDb = em.find(Task.class, taskId);
+			if(fromDb == null) {
+				throw new IllegalArgumentException("No task with id: " + taskId);
+			}
+			em.remove(fromDb);
+			em.getTransaction().commit();
+		} finally {
+			em.close();
+		}
 	}
 }
