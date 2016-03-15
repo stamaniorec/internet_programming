@@ -2,24 +2,25 @@ package org.elsysbg.ip.todo.services;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 
 import org.elsysbg.ip.todo.entities.Task;
 
 @Singleton
 public class TasksService {
-	private final EntityManagerFactory emf;
-
-	public TasksService() {
-		emf = Persistence.createEntityManagerFactory("todolist-jpa");
+	private final EntityManagerService entityManagerService;
+	
+	@Inject
+	public TasksService(EntityManagerService entityManagerService) {
+		this.entityManagerService = entityManagerService;
+		
 	}
-
+	
 	public Task createTask(Task task) {
-		final EntityManager em = emf.createEntityManager();
+		final EntityManager em = entityManagerService.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			em.persist(task);
@@ -34,7 +35,7 @@ public class TasksService {
 	}
 	
 	public List<Task> getTasks() {
-		final EntityManager em = emf.createEntityManager();
+		final EntityManager em = entityManagerService.createEntityManager();
 		try {
 			final TypedQuery<Task> query = 
 					em.createNamedQuery(Task.QUERY_ALL, Task.class);
@@ -45,7 +46,7 @@ public class TasksService {
 	}
 	
 	public Task getTask(long taskId) {
-		final EntityManager em = emf.createEntityManager();
+		final EntityManager em = entityManagerService.createEntityManager();
 		try {
 			final Task result = em.find(Task.class, taskId);
 			if(result == null) {
@@ -58,7 +59,7 @@ public class TasksService {
 	}
 	
 	public Task updateTask(Task task) {
-		final EntityManager em = emf.createEntityManager();
+		final EntityManager em = entityManagerService.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			final Task result = em.merge(task);
@@ -73,7 +74,7 @@ public class TasksService {
 	}
 	
 	public void deleteTask(long taskId) {
-		final EntityManager em = emf.createEntityManager();
+		final EntityManager em = entityManagerService.createEntityManager();
 		try {
 			em.getTransaction().begin();
 			final Task fromDb = em.find(Task.class, taskId);
