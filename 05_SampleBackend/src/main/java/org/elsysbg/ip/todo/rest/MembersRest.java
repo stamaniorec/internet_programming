@@ -20,32 +20,27 @@ import org.elsysbg.ip.todo.services.TasksService;
 public class MembersRest {
 	private final MembersService membersService;
 	private final TasksService tasksService;
-	
+
 	@Inject
-	public MembersRest(MembersService membersService, TasksService tasksService) {
+	public MembersRest(MembersService membersService,
+		TasksService tasksService) {
 		this.membersService = membersService;
 		this.tasksService = tasksService;
 	}
 	
-	@GET
-	@Path("/{MemberId}")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Member getMember(@PathParam("MemberId") long MemberId) {
-		return membersService.getMember(MemberId);
-	}
-	
 	@POST
-	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public Member createMember(Member Member) {
-		return membersService.createMember(Member);
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public Member createMember(Member member) {
+		return membersService.createMember(member);
 	}
 	
 	@GET
 	@Path("/{memberId}/tasks")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	public List<Task> getMemberTask(@PathParam("memberId") long memberId) {
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	public List<Task> getMemberTasks(
+		@PathParam("memberId") long memberId) {
 		final Member author = membersService.getMember(memberId);
-		tasksService.getTasksByAuthor(author);
+		return tasksService.getTasksByAuthor(author);
 	}
 }

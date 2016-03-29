@@ -14,34 +14,39 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.elsysbg.ip.todo.entities.Task;
+import org.elsysbg.ip.todo.services.AuthenticationService;
 import org.elsysbg.ip.todo.services.TasksService;
 
 @Path("/tasks")
 public class TasksRest {
 	private final TasksService tasksService;
-	
+	private final AuthenticationService authenticationService;
+
 	@Inject
-	public TasksRest(TasksService tasksService) {
+	public TasksRest(TasksService tasksService,
+			AuthenticationService authenticationService) {
 		this.tasksService = tasksService;
+		this.authenticationService = authenticationService;
 	}
 	
 	@GET
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public List<Task> getTasks() {
 		return tasksService.getTasks();
 	}
 	
 	@GET
 	@Path("/{taskId}")
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Task getTask(@PathParam("taskId") long taskId) {
 		return tasksService.getTask(taskId);
 	}
 	
 	@POST
-	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Task createTask(Task task) {
+		task.setAuthor(authenticationService.getCurrentlyLoggedInMember());
 		return tasksService.createTask(task);
 	}
 	
@@ -53,8 +58,8 @@ public class TasksRest {
 	
 	@PUT
 	@Path("/{taskId}")
-	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
 	public Task updateTask(@PathParam("taskId") long taskId, Task task) {
 		final Task fromDb = tasksService.getTask(taskId);
 		fromDb.setTitle(task.getTitle());

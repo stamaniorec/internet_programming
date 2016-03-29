@@ -10,10 +10,13 @@ public class EntityManagerService {
 	private final EntityManagerFactory emf;
 	
 	public EntityManagerService() {
-		emf = Persistence.createEntityManagerFactory("todolist-jpa");
+		// this should be done only once in the application:
+		emf = Persistence.
+			createEntityManagerFactory("todolist-jpa");
 	}
 	
 	public EntityManager createEntityManager() {
 		return emf.createEntityManager();
 	}
+
 }
