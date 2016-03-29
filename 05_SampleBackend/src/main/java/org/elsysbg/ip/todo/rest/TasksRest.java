@@ -14,7 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.shiro.subject.Subject;
-import org.elsysbg.ip.todo.entities.Member;
 import org.elsysbg.ip.todo.entities.Task;
 import org.elsysbg.ip.todo.services.AuthenticationService;
 import org.elsysbg.ip.todo.services.TasksService;
