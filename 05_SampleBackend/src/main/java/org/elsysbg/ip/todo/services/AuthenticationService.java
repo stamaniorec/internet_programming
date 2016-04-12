@@ -27,7 +27,7 @@ public class AuthenticationService {
 
 	public Member getCurrentlyLoggedInMember(Subject subject) {
 		final String username = (String) subject.getPrincipal();
-		if(username == null) {
+		if (username == null) {
 			return null;
 		}
 		return membersServiceProvider.get().getMemberByUsername(username);
@@ -60,5 +60,9 @@ public class AuthenticationService {
 	public void login(Subject subject, String username, String password) {
 		final UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 		subject.login(token);
+	}
+
+	public void logout(Subject subject) {
+		subject.logout();
 	}
 }

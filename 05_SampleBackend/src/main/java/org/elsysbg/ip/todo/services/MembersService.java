@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import org.elsysbg.ip.todo.entities.Member;
-import org.elsysbg.ip.todo.entities.Task;
 
 @Singleton
 public class MembersService {
@@ -16,7 +15,8 @@ public class MembersService {
 	private final AuthenticationService authenticationService;
 	
 	@Inject
-	public MembersService(EntityManagerService entityManagerService, AuthenticationService authenticationService) {
+	public MembersService(EntityManagerService entityManagerService,
+		AuthenticationService authenticationService) {
 		this.entityManagerService = entityManagerService;
 		this.authenticationService = authenticationService;
 	}
@@ -36,11 +36,6 @@ public class MembersService {
 			}
 			em.close();
 		}
-	}
-
-	private String encryptPassword(String password) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	public List<Member> getMembers() {
@@ -67,16 +62,17 @@ public class MembersService {
 			em.close();
 		}
 	}
-	
+
 	public Member getMemberByUsername(String username) {
 		final EntityManager em = entityManagerService.createEntityManager();
 		try {
 			final TypedQuery<Member> query =
 					em.createNamedQuery(Member.QUERY_BY_USERNAME, Member.class);
-				query.setParameter("username", username);
-				return query.getSingleResult();
+			query.setParameter("username", username);
+			return query.getSingleResult();
 		} finally {
 			em.close();
 		}
 	}
+	
 }
